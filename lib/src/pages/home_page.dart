@@ -71,11 +71,11 @@ class _HomePageState extends State<HomePage> {
           onDismissed: (direction){
             setState(() {
               if(direction == DismissDirection.endToStart){
-              _tareasIncompletas.removeAt(index);
-              _checkBoxBlock.removeAt(index);
+                _tareasIncompletas.removeAt(index);
+                _checkBoxBlock.removeAt(index);
               }
               if(direction == DismissDirection.startToEnd){
-              _editar(context, index);
+                _editar(context, index);
               }
             });
           },
@@ -216,7 +216,6 @@ class _HomePageState extends State<HomePage> {
                       child: Text('Cancelar'),
                       onPressed: () {
                         setState(() {
-                          //  _tareaIngresada = '';
                           Navigator.pop(context);
                         });
                       },
