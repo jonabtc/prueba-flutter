@@ -5,18 +5,15 @@ import 'package:prueba_flutter/src/models/list_model.dart';
 class TareasProviedr {
   
   final String _url = 'https://flutter-prueba-e5ba2.firebaseio.com';
-
-  Future<bool> crearTarea(ListModel listModel) async {
+  Future<bool> crearTarea(ListModel listModel, http.Client client) async {
     final url = "$_url/tareas.json";
-    final resp = await http.post(url, body: listModelToJson(listModel));
-    final decodedData = json.decode(resp.body);
-    print(decodedData);
+    final resp = await client.post(url, body: listModelToJson(listModel));
     return true;
   }
 
-  Future<List<ListModel>> cargarTareas(bool isRealizado) async {
+  Future<List<ListModel>> cargarTareas(bool isRealizado, http.Client client) async {
     final url = '$_url/tareas.json';
-    final resp = await http.get(url);
+    final resp = await client.get(url);
     final Map<String, dynamic> decodedData = json.decode(resp.body);
     final List<ListModel> tareas = new List();
     if (decodedData == null) return [];
@@ -25,22 +22,18 @@ class TareasProviedr {
       tareaTemp.id = id;
       if (tareaTemp.realizado == isRealizado) tareas.add(tareaTemp);
     });
-
-    print(tareas);
     return tareas;
   }
 
-  Future<bool> borrarTarea(String id) async {
+  Future<bool> borrarTarea(String id, http.Client client) async {
     final url = '$_url/tareas/$id.json';
-    await http.delete(url);
+    await client.delete(url);
     return true;
   }
 
-  Future<bool> editarTarea(ListModel listModel) async {
+  Future<bool> editarTarea(ListModel listModel, http.Client client) async {
     final url = "$_url/tareas/${listModel.id}.json";
-    final resp = await http.put(url, body: listModelToJson(listModel));
-    final decodedData = json.decode(resp.body);
-    print(decodedData);
+    final resp = await client.put(url, body: listModelToJson(listModel));
     return true;
   }
 }

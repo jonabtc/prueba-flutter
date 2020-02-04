@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prueba_flutter/src/models/list_model.dart';
 import 'package:prueba_flutter/src/servicios/tareas_providers.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   @override
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
   Widget _listaIncompletas() {
     return FutureBuilder(
       future: tareasProvider
-          .cargarTareas(false), // false si la tarea aun no se completa
+          .cargarTareas(false, new http.Client()), // false si la tarea aun no se completa
       builder: (BuildContext context, AsyncSnapshot<List<ListModel>> snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
@@ -63,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                 onDismissed: (direction) {
                   setState(() {
                     if (direction == DismissDirection.endToStart) {
-                      tareasProvider.borrarTarea(item.id);
+                      tareasProvider.borrarTarea(item.id, new http.Client());
                     }
 
                     if (direction == DismissDirection.startToEnd) {
@@ -82,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                       item.realizado = valor;
                       setState(() {
                         
-                        tareasProvider.editarTarea(item);
+                        tareasProvider.editarTarea(item, new http.Client());
                       });
                     },
                   ),
@@ -102,7 +103,7 @@ class _HomePageState extends State<HomePage> {
   _listaCompletas() {
     return FutureBuilder(
       future: tareasProvider
-          .cargarTareas(true), // true si las tareas estan realizadas
+          .cargarTareas(true, new http.Client()), // true si las tareas estan realizadas
       builder: (BuildContext context, AsyncSnapshot<List<ListModel>> snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
@@ -116,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onDismissed: (direction) {
                     setState(() {
-                      tareasProvider.borrarTarea(item.id);
+                      tareasProvider.borrarTarea(item.id, new http.Client());
                     });
                   },
                   child: ListTile(
@@ -160,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                         setState(() {
                           listModel.titulo = _tareaIngresada;
                           listModel.realizado = false;
-                          tareasProvider.crearTarea(listModel);
+                          tareasProvider.crearTarea(listModel, new http.Client());
                           Navigator.pop(context);
                         });
                       },
@@ -277,7 +278,7 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         setState(() {
                           item.titulo = tarea;
-                          tareasProvider.editarTarea(item);
+                          tareasProvider.editarTarea(item, new http.Client());
                           Navigator.pop(context);
                         });
                       },
