@@ -5,6 +5,7 @@ import 'package:test/test.dart';
 
 void main(){
   
+
   test('prueba de match correo FALSE', (){    
     var result = Validators.matchMail('asdfasdfgmail.com');    
     expect(result, false);
@@ -24,6 +25,5 @@ void main(){
     var result = Validators.acceptedPass('123456');    
     expect(result, true );
   });
-  
 
 }
